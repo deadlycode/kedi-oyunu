@@ -50,7 +50,7 @@ const FlappyCat: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio('sound.mp3');
+    audioRef.current = new Audio('/sound.mp3');
     audioRef.current.loop = true;
   }, []);
 
