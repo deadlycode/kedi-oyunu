@@ -10,7 +10,12 @@ const CAT_HEIGHT = 30;
 const MIN_PIPE_HEIGHT = 50;
 const PIPE_SPACING = 300;
 
-const titles = [
+type Title = {
+  score: number;
+  title: string;
+};
+
+const titles: Title[] = [
   { score: 0, title: "Yavru Kedi" },
   { score: 10, title: "Ev Kedisi" },
   { score: 20, title: "Sokak Kedisi" },
@@ -24,7 +29,7 @@ const titles = [
   { score: 100, title: "Galaksinin Koruyucusu" }
 ];
 
-const getTitle = (score) => {
+const getTitle = (score: number): string => {
   for (let i = titles.length - 1; i >= 0; i--) {
     if (score >= titles[i].score) {
       return titles[i].title;
@@ -33,15 +38,15 @@ const getTitle = (score) => {
   return titles[0].title;
 };
 
-const FlappyCat = () => {
-  const [gameSize, setGameSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const [catPosition, setCatPosition] = useState(gameSize.height / 2);
-  const [catVelocity, setCatVelocity] = useState(0);
-  const [catRotation, setCatRotation] = useState(0);
-  const [pipes, setPipes] = useState([]);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [score, setScore] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
+const FlappyCat: React.FC = () => {
+  const [gameSize, setGameSize] = useState<{ width: number; height: number }>({ width: window.innerWidth, height: window.innerHeight });
+  const [catPosition, setCatPosition] = useState<number>(gameSize.height / 2);
+  const [catVelocity, setCatVelocity] = useState<number>(0);
+  const [catRotation, setCatRotation] = useState<number>(0);
+  const [pipes, setPipes] = useState<{ x: number; height: number }[]>([]);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
+  const [gameOver, setGameOver] = useState<boolean>(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,13 +56,13 @@ const FlappyCat = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const generatePipe = useCallback((xPosition) => {
+  const generatePipe = useCallback((xPosition: number): { x: number; height: number } => {
     const maxPipeHeight = gameSize.height - PIPE_GAP - MIN_PIPE_HEIGHT;
     const height = Math.random() * (maxPipeHeight - MIN_PIPE_HEIGHT) + MIN_PIPE_HEIGHT;
     return { x: xPosition, height: height };
   }, [gameSize.height]);
 
-  const initializePipes = useCallback(() => {
+  const initializePipes = useCallback((): { x: number; height: number }[] => {
     const initialPipes = [];
     for (let i = 0; i < 3; i++) {
       initialPipes.push(generatePipe(gameSize.width + i * PIPE_SPACING));
@@ -77,7 +82,7 @@ const FlappyCat = () => {
   }, [gameStarted, gameOver, initializePipes]);
 
   useEffect(() => {
-    const handleKeyPress = (e) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === 'Space') {
         jump();
       }
