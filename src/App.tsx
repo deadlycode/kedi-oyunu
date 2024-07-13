@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 const GRAVITY = 0.6;
-const JUMP_STRENGTH = -10;
+const JUMP_STRENGTH = -8; // Zıplama gücünü azalttık
 const PIPE_WIDTH = 80;
 const PIPE_GAP = 200;
 const PIPE_SPEED = 3;
@@ -47,6 +47,21 @@ const FlappyCat: React.FC = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [gameOver, setGameOver] = useState<boolean>(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio('sound.mp3');
+    audioRef.current.loop = true;
+  }, []);
+
+  useEffect(() => {
+    if (gameStarted && !gameOver && audioRef.current) {
+      audioRef.current.play();
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }, [gameStarted, gameOver]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -74,6 +89,9 @@ const FlappyCat: React.FC = () => {
     if (!gameStarted) {
       setGameStarted(true);
       setPipes(initializePipes());
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
     }
     if (!gameOver) {
       setCatVelocity(JUMP_STRENGTH);
