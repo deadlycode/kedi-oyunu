@@ -1,3 +1,6 @@
+import './index.css';
+
+
 import React, { useState, useEffect, useCallback } from 'react';
 
 const GRAVITY = 0.6;
