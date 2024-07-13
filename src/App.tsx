@@ -1,6 +1,3 @@
-import './index.css';
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 
 const GRAVITY = 0.6;
@@ -169,32 +166,30 @@ const FlappyCat: React.FC = () => {
     <div 
       className="relative overflow-hidden w-screen h-screen"
       onClick={jump}
-      style={{
-        background: 'linear-gradient(180deg, #4dc9ff 0%, #74e7ff 100%)',
-      }}
     >
-      <div className="absolute inset-0 w-full h-full" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.5' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,250.7C1248,256,1344,288,1392,304L1440,320L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E\")", backgroundRepeat: 'repeat-x', backgroundPosition: 'bottom', backgroundSize: 'contain' }} />
+      <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-blue-300 to-blue-500" />
       {pipes.map((pipe, index) => (
         <React.Fragment key={index}>
-          <svg className="absolute" style={{ left: pipe.x, top: 0, width: PIPE_WIDTH, height: pipe.height }}>
-            <rect width={PIPE_WIDTH} height={pipe.height} fill="url(#pipeGradient)" />
-            <rect width={PIPE_WIDTH} height="20" fill="#43a047" />
-          </svg>
-          <svg className="absolute" style={{ left: pipe.x, top: pipe.height + PIPE_GAP, width: PIPE_WIDTH, height: gameSize.height - pipe.height - PIPE_GAP }}>
-            <rect width={PIPE_WIDTH} height={gameSize.height - pipe.height - PIPE_GAP} fill="url(#pipeGradient)" />
-            <rect y={gameSize.height - pipe.height - PIPE_GAP - 20} width={PIPE_WIDTH} height="20" fill="#43a047" />
-          </svg>
+          <div className="absolute bg-green-600" style={{
+            left: pipe.x,
+            top: 0,
+            width: PIPE_WIDTH,
+            height: pipe.height
+          }} />
+          <div className="absolute bg-green-600" style={{
+            left: pipe.x,
+            top: pipe.height + PIPE_GAP,
+            width: PIPE_WIDTH,
+            height: gameSize.height - pipe.height - PIPE_GAP
+          }} />
         </React.Fragment>
       ))}
       <div
-        className="absolute text-5xl transform -scale-x-100"
+        className="absolute text-4xl"
         style={{
           left: gameSize.width / 2 - CAT_WIDTH / 2,
           top: catPosition,
-          width: CAT_WIDTH,
-          height: CAT_HEIGHT,
-          transition: 'transform 0.1s',
-          transform: `translateY(-50%) rotate(${catRotation}deg) scaleX(-1)`,
+          transform: `translateY(-50%) rotate(${catRotation}deg)`,
         }}
       >
         🐱
@@ -210,33 +205,24 @@ const FlappyCat: React.FC = () => {
         </div>
       )}
       {gameOver && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 text-white">
-          <div className="text-6xl mb-8 font-bold">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-white">
+          <div className="text-4xl mb-4 font-bold">
             OYUN BİTTİ
           </div>
-          <div className="text-4xl mb-4">
+          <div className="text-2xl mb-2">
             Puan: {score}
           </div>
-          <div className="text-3xl mb-8">
+          <div className="text-xl mb-4">
             Unvan: {getTitle(score)}
           </div>
           <button
-            className="mt-4 px-6 py-3 bg-blue-500 text-white rounded text-2xl hover:bg-blue-600 transition-colors"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             onClick={restartGame}
           >
             Yeniden Başla
           </button>
         </div>
       )}
-      <svg width="0" height="0">
-        <defs>
-          <linearGradient id="pipeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#2e7d32" />
-            <stop offset="50%" stopColor="#4caf50" />
-            <stop offset="100%" stopColor="#2e7d32" />
-          </linearGradient>
-        </defs>
-      </svg>
     </div>
   );
 };
